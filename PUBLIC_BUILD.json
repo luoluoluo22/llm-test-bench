@@ -3,12 +3,15 @@
   "project": {
     "title": "LLM Test Bench",
     "slug": "llm-test-bench",
-    "domain": "neuroviz.uk",
-    "suggestedPreviewHost": "neuroviz.uk",
-    "repositoryUrl": "https://github.com/Techdread/llm-test-bench"
+    "repositoryUrl": "https://github.com/luoluoluo22/llm-test-bench"
   },
-  "generatedAt": "2026-11-08T18:02:14.304Z",
+  "generatedAt": "2026-11-12T04:00:00.000Z",
   "apps": [
+    {
+      "source": "text-bench",
+      "publicPath": "text-bench",
+      "title": "Text Bench / 文本评测实验室"
+    },
     {
       "source": "prompt-gallery",
       "publicPath": "prompt-gallery",

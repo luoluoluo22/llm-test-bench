@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="公开模型文本评测实验室。使用自己的 OpenAI 兼容 API，同时运行多个模型，比较回答并分享结果。">
+  <title>文本评测实验室 · LLM Test Bench</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../"><span class="brand-mark">TB</span><span>LLM Test Bench</span></a>
+    <nav><a class="active" href="./">文本实验室</a><a href="../shares.html">公开结果</a><a href="../">全部工具</a></nav>
+    <span class="public-tag">公开实验室</span>
+  </header>
+
+  <main class="layout">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">TEXT BENCH · OPEN EVALUATION</p>
+        <h1>同一道题，<span>让模型用结果说话。</span></h1>
+        <p class="hero-copy">连接你自己的模型接口，同时运行多个模型。比较回答质量、速度和实际表现；满意的结果可以主动公开分享。</p>
+      </div>
+      <div class="hero-note"><span class="dot"></span> API Key 只保存在当前浏览器会话中，不会上传到本站。</div>
+    </section>
+
+    <section class="panel provider-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / CONNECTION</p><h2>连接模型服务</h2></div>
+        <span class="muted">OpenAI 兼容协议</span>
+      </div>
+      <div class="form-grid">
+        <label class="field wide"><span>API Base URL</span><input id="baseUrl" type="url" placeholder="https://api.example.com/v1" autocomplete="url"></label>
+        <label class="field"><span>API Key <small>（可选）</small></span><input id="apiKey" type="password" placeholder="sk-..." autocomplete="off"></label>
+        <label class="field"><span>模型 ID <small>（逗号或换行分隔）</small></span><textarea id="modelIds" rows="2" placeholder="gpt-4.1-mini&#10;claude-sonnet-4-5"></textarea></label>
+      </div>
+      <div class="toolbar">
+        <button id="fetchModels" class="button secondary" type="button">获取模型列表</button>
+        <button id="saveConnection" class="button secondary" type="button">保存连接信息</button>
+        <span id="connectionStatus" class="status" role="status">填写地址和模型 ID 后即可开始</span>
+      </div>
+      <div class="model-picker">
+        <div class="picker-heading"><strong>选择本次参测模型</strong><span class="muted">最多同时运行 4 个</span></div>
+        <div id="modelChoices" class="model-choices"><p class="empty-inline">连接服务并获取模型列表，或在模型 ID 中手动填写。</p></div>
+      </div>
+      <p class="fine-print">模型服务必须允许当前网站的跨域请求（CORS）。本站不提供公共代理，也不会代替你转发 API 请求。</p>
+    </section>
+
+    <section class="panel prompt-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">02 / TEST CASE</p><h2>设计评测任务</h2></div>
+        <span class="muted">相同输入 · 并行对比</span>
+      </div>
+      <label class="field"><span>System Prompt <small>（可选）</small></span><textarea id="systemPrompt" rows="2" placeholder="你是一位严谨的专家，请给出清晰、可验证的回答。"></textarea></label>
+      <label class="field"><span>评测问题 / Prompt</span><textarea id="prompt" rows="5" placeholder="输入你希望所有模型回答的同一道题……"></textarea></label>
+      <div class="toolbar run-toolbar">
+        <button id="runModels" class="button primary" type="button">运行所选模型 <span aria-hidden="true">→</span></button>
+        <span id="runStatus" class="status" role="status">准备就绪</span>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">03 / EVIDENCE</p><h2>评测结果</h2></div>
+        <div class="result-actions"><button id="shareResults" class="button secondary" type="button" disabled>公开分享结果</button><a class="text-link" href="../shares.html">浏览社区结果 →</a></div>
+      </div>
+      <div id="results" class="results-grid"><div class="empty-state"><span class="empty-icon">◎</span><h3>等待第一次评测</h3><p>连接模型、选择参测对象并提交问题，回答会在这里并排展示。</p></div></div>
+    </section>
+
+    <section class="panel history-panel">
+      <div class="section-heading"><div><p class="eyebrow">LOCAL ARCHIVE</p><h2>本机历史记录</h2></div><button id="clearHistory" class="text-button" type="button">清空历史</button></div>
+      <div id="historyList" class="history-list"><p class="empty-inline">评测记录仅保存在你的浏览器中。</p></div>
+    </section>
+
+    <footer><span>LLM Test Bench · Text Bench</span><span>BYO Model · BYO Key · Share by choice</span></footer>
+  </main>
+</body>
+</html>

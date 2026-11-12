@@ -8,7 +8,7 @@ A browser-based workbench for testing how language models turn the same idea int
 interactive HTML, p5.js sketches, and SVG artwork — plus agentic builders that write
 whole games, WebXR projects and 3D assets, and a set of developer tools.
 
-[**Open the live site**](https://neuroviz.uk) · [The benches](#the-three-benches) · [Agentic builders](#agentic-builders) · [Developer tools](#developer-tools) · [Quick start](#quick-start)
+[**Open Text Bench**](text-bench/) · [Community results](shares.html) · [The benches](#the-three-benches) · [Agentic builders](#agentic-builders) · [Developer tools](#developer-tools) · [Quick start](#quick-start)
 
 ![Licence](https://img.shields.io/badge/licence-MIT-blue) ![No build step](https://img.shields.io/badge/build-none-brightgreen) ![Browsers](https://img.shields.io/badge/browsers-Chrome%20%7C%20Edge-informational)
 
@@ -16,10 +16,7 @@ whole games, WebXR projects and 3D assets, and a set of developer tools.
 
 ---
 
-Three focused test benches, one shared workflow: pick a prompt, run it through any
-model you like, and keep every result with the model, seed, and parameters that
-produced it. No accounts, no database, no telemetry — your work is written to a
-folder you choose on your own machine.
+The lab offers several focused test benches: run the same prompt through the models you choose, compare outputs, and keep the evidence. Local work stays in your browser or in a folder you choose. Optional public text sharing uses a small D1 database; users must explicitly confirm before a result is published.
 
 <!-- VIDEO: replace with a 20–40s overview clip once recorded. See "Adding the videos" below. -->
 
@@ -32,6 +29,12 @@ folder you choose on your own machine.
 | **Compare properly** | Run one prompt across several models, put the results side by side, rate them, and export what you find. |
 | **Own your files** | Pick a folder once; the apps create their own subfolders inside it and write there through the File System Access API. |
 | **Record a walkthrough** | Each app has a built-in screen recorder for capturing what a model produced. |
+
+## Text Bench (this fork)
+
+This fork is rebranded as a public model laboratory, with a Chinese-language, browser-only text evaluation workspace for comparing up to four OpenAI-compatible models on the same prompt. It streams answers side by side, records latency and optional human scores, keeps local history, and lets users explicitly publish selected results to the community gallery. Provider API keys remain in the current browser session and are never included in public submissions.
+
+The public landing page is now the lab homepage; the original portfolio landing page is preserved at [portfolio.html](portfolio.html). Open [Text Bench](text-bench/) or browse [public community results](shares.html).
 
 ## The three benches
 
@@ -99,7 +102,7 @@ the result instead of trusting it.
 Nothing to install and nothing to build.
 
 ```bash
-git clone https://github.com/Techdread/llm-test-bench.git
+git clone https://github.com/luoluoluo22/llm-test-bench.git
 cd llm-test-bench
 python3 -m http.server 8080
 ```

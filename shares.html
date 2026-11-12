@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="浏览社区公开分享的模型文本评测结果。">
+  <title>公开评测结果 · LLM Test Bench</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./text-bench/styles.css">
+  <script type="module" src="./shares.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="brand-mark">TB</span><span>LLM Test Bench</span></a>
+    <nav><a href="./text-bench/">文本实验室</a><a class="active" href="./shares.html">公开结果</a><a href="./">全部工具</a></nav>
+    <span class="public-tag">COMMUNITY</span>
+  </header>
+  <main class="layout">
+    <section class="hero">
+      <div><p class="eyebrow">COMMUNITY EVIDENCE · PUBLIC SHARES</p><h1>公开评测，<span>共同积累证据。</span></h1><p class="hero-copy">这里展示用户主动分享的模型回答。结果来自不同 API、模型版本和运行环境；它们是可供参考的样本，不是统一实验室条件下的官方排名。</p></div>
+      <a class="button primary" href="./text-bench/">开始自己的评测 →</a>
+    </section>
+    <section class="results-section">
+      <div class="section-heading"><div><p class="eyebrow">LATEST SUBMISSIONS</p><h2>最近公开的结果</h2></div><span id="galleryStatus" class="status">正在加载……</span></div>
+      <div id="shareGallery" class="results-grid"></div>
+    </section>
+    <section id="detail" class="results-section" hidden>
+      <div class="section-heading"><div><p class="eyebrow">SHARED RESULT</p><h2 id="detailTitle">评测详情</h2></div><a class="text-link" href="./shares.html">返回列表 ↑</a></div>
+      <div id="detailContent" class="results-grid"></div>
+    </section>
+    <footer><span>LLM Test Bench · Public Results</span><span>Shared voluntarily by community members</span></footer>
+  </main>
+</body>
+</html>
