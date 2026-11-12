@@ -1,93 +1,62 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="开放模型实验室：使用自己的模型 API，比较文本回答、HTML 创作、SVG 与 p5.js 生成结果，并公开分享评测证据。">
-  <meta property="og:title" content="开放模型实验室 · LLM Test Bench">
-  <meta property="og:description" content="同一道题，让不同模型用真实结果说话。">
-  <title>开放模型实验室 · LLM Test Bench</title>
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./lab-home.css">
+  <meta name="description" content="个人 AI 提示词工作台">
+  <title>AI 工作台</title>
+  <link rel="stylesheet" href="./workbench.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="./"><span class="brand-mark">TB</span><span>LLM Test Bench</span></a>
-    <nav aria-label="主导航">
-      <a href="./text-bench/">文本评测</a>
-      <a href="./shares.html">公开结果</a>
-      <a href="#benches">实验项目</a>
-      <a href="https://github.com/luoluoluo22/llm-test-bench" target="_blank" rel="noopener">开源代码 ↗</a>
-    </nav>
-    <span class="public-tag">OPEN LAB</span>
-  </header>
-  <main class="shell">
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="pulse"></span> OPEN MODEL LABORATORY · 公开模型实验室</p>
-        <h1>同一道题，<br><span>让模型用结果说话。</span></h1>
-        <p class="lead">一个开放的模型实验与对比空间。连接你自己的 API，同时测试多个模型，观察它们在文本推理、代码生成和视觉创作中的真实表现。把有价值的结果分享出来，让每个人都能查看和复现。</p>
-        <div class="hero-actions">
-          <a class="button primary" href="./text-bench/">开始文本评测 <span>→</span></a>
-          <a class="button secondary" href="./shares.html">浏览公开结果</a>
+  <main class="app">
+    <header class="header">
+      <div class="brand"><span class="brand-icon">✳</span><span>AI 工作台</span></div>
+      <details class="settings" id="settings">
+        <summary>接口设置</summary>
+        <div class="settings-panel">
+          <label>API Base URL<input id="baseUrl" type="url" placeholder="https://api.example.com/v1" autocomplete="url"></label>
+          <label>API Key<input id="apiKey" type="password" placeholder="输入你的 API Key" autocomplete="off"></label>
+          <button id="saveSettings" class="button secondary" type="button">保存接口设置</button>
+          <p id="settingsStatus" class="hint" aria-live="polite">API Key 只保存在当前浏览器会话。</p>
         </div>
-        <div class="trust">
-          <span><i></i> 自带模型与 API Key</span>
-          <span><i></i> 浏览器直连模型服务</span>
-          <span><i></i> 分享由用户主动决定</span>
-        </div>
+      </details>
+    </header>
+
+    <section class="composer" aria-labelledby="pageTitle">
+      <h1 id="pageTitle">想让 AI 做什么？</h1>
+      <p class="subtitle">输入提示词，选择模型，直接查看生成结果。</p>
+
+      <div class="model-row">
+        <label class="model-select-label" for="modelSelect">模型</label>
+        <select id="modelSelect" aria-label="选择模型"></select>
+        <button id="manageModels" class="button secondary" type="button">管理模型</button>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <div class="core"><span>MODEL</span><strong>↔</strong><span>RESULT</span></div>
-        <div class="node node-a">A</div><div class="node node-b">B</div><div class="node node-c">C</div>
-        <div class="art-label label-a">同一输入</div><div class="art-label label-b">多模型并行</div><div class="art-label label-c">可比较的证据</div>
-      </div>
-    </section>
-    <section class="principles">
-      <div><strong>01</strong><span><b>同一输入</b><small>让模型在一致条件下接受测试</small></span></div>
-      <div><strong>02</strong><span><b>并行对比</b><small>回答、耗时和人工评分并排呈现</small></span></div>
-      <div><strong>03</strong><span><b>公开证据</b><small>用户主动分享，社区共同积累样本</small></span></div>
-    </section>
-    <section id="benches" class="benches">
-      <div class="section-title"><div><p class="eyebrow">CHOOSE YOUR EXPERIMENT</p><h2>选择一个实验场</h2></div><p>从文本任务开始，也可以测试模型生成可运行内容的能力。</p></div>
-      <div class="bench-grid">
-        <article class="bench-card featured">
-          <div class="card-top"><span class="card-icon">Aa</span><span class="pill">推荐入口</span></div>
-          <p class="card-kicker">TEXT · REASONING · INSTRUCTION</p><h3>文本评测实验室</h3>
-          <p>同一个 Prompt 并行测试多个模型，实时查看回答，比较响应速度并进行人工评分。支持自定义 OpenAI 兼容 API。</p>
-          <ul><li>最多 4 个模型并行运行</li><li>流式回答与本机历史记录</li><li>一键公开分享评测结果</li></ul>
-          <a class="card-link" href="./text-bench/">进入文本实验室 <span>→</span></a>
-        </article>
-        <article class="bench-card">
-          <div class="card-top"><span class="card-icon">{ }</span><span class="pill neutral">HTML 创作</span></div>
-          <p class="card-kicker">GENERATIVE HTML · INTERACTIVE</p><h3>Prompt Gallery</h3>
-          <p>给不同模型相同的创作任务，生成可交互 HTML，在隔离预览中检查实际运行效果并并排比较。</p>
-          <ul><li>丰富的任务提示库</li><li>沙箱预览与批量生成</li><li>评分、迭代与结果留档</li></ul>
-          <a class="card-link" href="./prompt-gallery/">进入 HTML 实验室 <span>→</span></a>
-        </article>
-        <article class="bench-card">
-          <div class="card-top"><span class="card-icon">◇</span><span class="pill neutral">SVG 生成</span></div>
-          <p class="card-kicker">VECTOR ART · PIXEL DIFF</p><h3>SVG Benchmark</h3>
-          <p>测试模型理解视觉描述并生成矢量图形的能力，通过像素差异和人工评价观察输出质量。</p>
-          <ul><li>从图标到复杂插画</li><li>像素差异评分</li><li>结构检查与批量评测</li></ul>
-          <a class="card-link" href="./svg-benchmark/">进入 SVG 实验室 <span>→</span></a>
-        </article>
-        <article class="bench-card">
-          <div class="card-top"><span class="card-icon">✳</span><span class="pill neutral">创意编程</span></div>
-          <p class="card-kicker">P5.JS · GENERATIVE ART</p><h3>p5 Sketch Gallery</h3>
-          <p>用统一任务观察模型的创意编程能力，生成可调参数、可复现的生成艺术与动态草图。</p>
-          <ul><li>随机种子与参数控制</li><li>实时画布预览</li><li>变体、解释与对比</li></ul>
-          <a class="card-link" href="./p5-sketch-gallery/">进入 p5 实验室 <span>→</span></a>
-        </article>
+
+      <section id="modelManager" class="model-manager" hidden aria-label="模型 ID 管理">
+        <div class="manager-title"><strong>模型 ID</strong><span>添加后会保存在当前浏览器</span></div>
+        <form id="modelForm" class="add-model-form">
+          <input id="newModelId" type="text" placeholder="输入模型 ID，例如 gpt-4.1" autocomplete="off" required>
+          <button class="button primary" type="submit">添加模型</button>
+        </form>
+        <ul id="modelList" class="model-list"></ul>
+      </section>
+
+      <label class="prompt-label" for="prompt">提示词</label>
+      <textarea id="prompt" rows="7" placeholder="在这里输入提示词……"></textarea>
+      <div class="composer-footer">
+        <span id="runStatus" class="hint" aria-live="polite">准备就绪</span>
+        <button id="generate" class="button primary generate" type="button"><span>生成</span><span aria-hidden="true">↗</span></button>
       </div>
     </section>
-    <section class="privacy-panel">
-      <div class="privacy-icon">⌑</div>
-      <div><p class="eyebrow">YOUR MODEL · YOUR CONTROL</p><h2>模型由你连接，数据由你决定。</h2><p>每位参与者使用自己的 API 地址和密钥，浏览器直接向模型服务发起请求。密钥只保存在当前浏览器会话，不会经过本站后端。评测结果默认留在本机，只有点击公开分享并确认后才会提交到社区。</p></div>
-      <a href="./privacy.html">隐私与安全说明 ↗</a>
+
+    <section class="results-section" aria-labelledby="resultsTitle">
+      <div class="results-heading"><h2 id="resultsTitle">生成结果</h2><span id="resultCount" class="hint">暂无结果</span></div>
+      <div id="results" class="results">
+        <div class="empty-state"><span>✳</span><p>生成的内容会显示在这里</p></div>
+      </div>
     </section>
-    <footer><a class="brand" href="./"><span class="brand-mark">TB</span><span>LLM Test Bench</span></a><span>MIT License · Open Model Laboratory</span><a href="https://github.com/luoluoluo22/llm-test-bench" target="_blank" rel="noopener">GitHub ↗</a></footer>
+    <footer>个人使用 · 模型请求由浏览器直接发送至你配置的 API</footer>
   </main>
+  <script src="./workbench.js" defer></script>
 </body>
 </html>
