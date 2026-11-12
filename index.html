@@ -17,14 +17,14 @@
           <label>API Base URL<input id="baseUrl" type="url" placeholder="https://api.example.com/v1" autocomplete="url"></label>
           <label>API Key<input id="apiKey" type="password" placeholder="输入你的 API Key" autocomplete="off"></label>
           <button id="saveSettings" class="button secondary" type="button">保存接口设置</button>
-          <p id="settingsStatus" class="hint" aria-live="polite">API Key 只保存在当前浏览器会话。</p>
+          <p id="settingsStatus" class="hint" aria-live="polite">API 为可选项。API Key 只保存在当前浏览器会话。</p>
         </div>
       </details>
     </header>
 
     <section class="composer" aria-labelledby="pageTitle">
       <h1 id="pageTitle">想让 AI 做什么？</h1>
-      <p class="subtitle">输入提示词，选择模型，直接查看生成结果。</p>
+      <p class="subtitle">配置 API 后可调用模型；不配置 API，也可以直接粘贴结果进行网页测试。</p>
 
       <div class="model-row">
         <label class="model-select-label" for="modelSelect">模型</label>
@@ -49,13 +49,23 @@
       </div>
     </section>
 
+    <section class="manual-entry" aria-labelledby="manualTitle">
+      <div class="manual-heading">
+        <div><h2 id="manualTitle">手动填写结果</h2><p>不需要 API。粘贴文本或 HTML 代码，直接预览。</p></div>
+        <span class="optional-tag">可选</span>
+      </div>
+      <input id="manualLabel" class="manual-label" type="text" placeholder="结果名称（可选，例如：网页测试 01）">
+      <textarea id="manualOutput" rows="7" placeholder="在这里粘贴 AI 返回的文本、HTML 页面或网页代码……"></textarea>
+      <div class="manual-footer"><span class="hint">检测到 HTML 时会自动渲染网页预览。</span><button id="addManualResult" class="button secondary" type="button">展示结果</button></div>
+    </section>
+
     <section class="results-section" aria-labelledby="resultsTitle">
       <div class="results-heading"><h2 id="resultsTitle">生成结果</h2><span id="resultCount" class="hint">暂无结果</span></div>
       <div id="results" class="results">
         <div class="empty-state"><span>✳</span><p>生成的内容会显示在这里</p></div>
       </div>
     </section>
-    <footer>个人使用 · 模型请求由浏览器直接发送至你配置的 API</footer>
+    <footer>个人使用 · API 调用和手动网页测试均可独立使用</footer>
   </main>
   <script src="./workbench.js" defer></script>
 </body>
