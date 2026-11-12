@@ -67,7 +67,7 @@
   }
   function extractHtml(raw) {
     const value = String(raw || "").trim();
-    const fenced = value.match(/^```(?:html|htm)?\s*\n([\s\S]*?)\n```$/i);
+    const fenced = value.match(/```(?:html|htm)\s*\n?([\s\S]*?)```/i);
     const candidate = fenced ? fenced[1].trim() : value;
     const isHtml = /<!doctype\s+html|<(?:html|head|body|main|div|section|article|header|footer|nav|aside|h[1-6]|p|ul|ol|li|button|form|input|table|svg|canvas|style|script)\b/i.test(candidate);
     return isHtml ? candidate : null;
