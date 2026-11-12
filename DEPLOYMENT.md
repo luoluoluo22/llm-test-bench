@@ -51,6 +51,22 @@ Pages project's **Settings → Bindings** bind the database as `DB` and the buck
 as `MEDIA`. The maintainers fill it with their own seeding tool; a fork that
 does not need a live showcase can ignore it.
 
+### Public text evaluation shares
+
+The fork adds a public text bench at `/text-bench/` and a community results page
+at `/shares.html`. Model requests run directly from each visitor's browser to
+their chosen OpenAI-compatible endpoint. API keys are kept in the browser's
+session storage and are never included in share submissions. Public submissions
+use the same D1 binding (`DB`); apply `migrations/0002_public_shares.sql` after
+`0001_showcase.sql`. No R2 bucket is needed for text-only shares.
+
+The share API requires same-origin POSTs, limits each client address to five
+submissions per hour, caps request size, strips common credential patterns, and
+stores only an address hash for rate limiting. Set a random `SHARE_RATE_SALT`
+secret in **Pages → Settings → Variables and Secrets** to make those hashes
+harder to correlate. Public shares are visible to anyone with the site URL; the
+sharing action is explicit and displays a confirmation before submission.
+
 ### Other hosts
 
 `_headers` is Cloudflare-specific. On Netlify the same file format works; on other
@@ -66,8 +82,9 @@ Serve over HTTPS (or `localhost`). The File System Access API, local-network
 access to a model server, and screen recording are all secure-context features
 and will not work over plain HTTP on a remote origin.
 
-No environment variables or deployment secrets are needed. Provider API keys are
-entered by each user in their own browser and are never part of the deployment.
+No provider API keys or model-service secrets are needed for deployment. Each user
+enters their own key in their browser session; it is never part of the deployment.
+For public shares, the optional SHARE_RATE_SALT secret is recommended.
 
 ## Check the deployment
 
