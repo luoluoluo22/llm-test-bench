@@ -54,15 +54,17 @@
   }
   function saveConnection() {
     const base = $("baseUrl").value.trim().replace(/\/+$/, "");
-    if (!base) throw new Error("请填写 API Base URL");
-    const url = new URL(base);
-    if (!/^https?:$/.test(url.protocol)) throw new Error("API 地址必须使用 HTTP 或 HTTPS");
-    const normalized = /\/v1$/i.test(base) ? base : `${base}/v1`;
+    let normalized = "";
+    if (base) {
+      const url = new URL(base);
+      if (!/^https?:$/.test(url.protocol)) throw new Error("API 地址必须使用 HTTP 或 HTTPS");
+      normalized = /\/v1$/i.test(base) ? base : `${base}/v1`;
+    }
     let old = {}; try { old = JSON.parse(localStorage.getItem(CONNECTION_KEY) || "{}"); } catch {}
     localStorage.setItem(CONNECTION_KEY, JSON.stringify({ ...old, baseUrl: normalized, modelIds: models }));
     const key = $("apiKey").value.trim();
     if (key) sessionStorage.setItem(API_KEY_SESSION, key); else sessionStorage.removeItem(API_KEY_SESSION);
-    $("settingsStatus").textContent = "接口设置已保存。API Key 仅保存在当前会话。";
+    $("settingsStatus").textContent = normalized ? "接口设置已保存。API Key 仅保存在当前会话。" : "未配置 API。你仍然可以使用下方的手动结果展示功能。";
     return { baseUrl: normalized, apiKey: key };
   }
   function extractHtml(raw) {
@@ -75,7 +77,7 @@
   function addResult(model, content, duration, failed = false) {
     const card = document.createElement("article"); card.className = "result-card";
     const header = document.createElement("header"); const name = document.createElement("span"); name.className = "result-model"; name.textContent = model;
-    const meta = document.createElement("span"); meta.className = "result-meta"; meta.textContent = failed ? "请求失败" : `${duration} ms`;
+    const meta = document.createElement("span"); meta.className = "result-meta"; meta.textContent = failed ? "请求失败" : duration === null ? "手动添加" : `${duration} ms`;
     header.append(name, meta); card.append(header);
     if (failed) { const body = document.createElement("div"); body.className = "result-content error-text"; body.textContent = content; card.append(body); }
     else {
@@ -96,6 +98,7 @@
     if (!model) return setStatus("请先添加并选择模型 ID。", true);
     if (!promptText) return setStatus("请先输入提示词。", true);
     let config; try { config = saveConnection(); } catch (error) { return setStatus(error.message, true); }
+    if (!config.baseUrl) return setStatus("尚未配置 API。请在右上角设置接口，或使用下方的手动填写结果功能。", true);
     const button = $("generate"); button.disabled = true; button.querySelector("span").textContent = "生成中…"; setStatus("正在请求模型……");
     const started = performance.now();
     try {
@@ -118,6 +121,14 @@
   $("modelForm").addEventListener("submit", event => { event.preventDefault(); const id = $("newModelId").value.trim(); if (!id) return; if (models.includes(id)) return alert("这个模型 ID 已经存在。"); models.push(id); saveModels(); renderModels(); $("modelSelect").value = id; $("newModelId").value = ""; });
   $("saveSettings").addEventListener("click", () => { try { saveConnection(); } catch (error) { $("settingsStatus").textContent = error.message; } });
   $("generate").addEventListener("click", generate);
+  $("addManualResult").addEventListener("click", () => {
+    const content = $("manualOutput").value.trim();
+    if (!content) return setStatus("请先填写要展示的结果。", true);
+    const label = $("manualLabel").value.trim() || $("modelSelect").value || "手动输入";
+    addResult(label, content, null);
+    $("manualOutput").value = "";
+    setStatus("手动结果已添加。");
+  });
   $("prompt").addEventListener("keydown", event => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") generate(); });
   models = readModels(); renderModels(); loadConnection();
 })();
